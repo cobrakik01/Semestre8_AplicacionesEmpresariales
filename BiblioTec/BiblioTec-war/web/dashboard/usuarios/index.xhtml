@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../resources/default/template.xhtml">
+
+            <ui:define name="content">
+                <h1 class="page-header">Usuarios</h1>
+                <div class="row placeholders">
+                    <div class="col-md-12">
+                        <h:form id="formUsuario">
+                            <p:messages id="msgs" globalOnly="true" showDetail="true"/>
+
+                            <div class="col-lg-6 text-left">
+                                <h2 class="sub-header">Crear/Editar Usuario.</h2>
+
+                                <h:outputLabel value="Id:" for="id" />
+                                <h:inputText styleClass="form-control" id="id" value="#{mbUsuarios.usuario.id}" title="Id" required="true" requiredMessage="El ID es nesesario."/>
+                                <h:outputLabel value="Usuario:" for="usuario" />
+                                <h:inputText styleClass="form-control" id="usuario" value="#{mbUsuarios.usuario.usuario}" title="Usuario" required="true" requiredMessage="El nombre de usuario es nesesario."/>
+                                <h:outputLabel value="Password:" for="password" />
+                                <h:inputText styleClass="form-control" id="password" value="#{mbUsuarios.usuario.password}" title="Password" required="true" requiredMessage="El password es nesesario."/>
+                                <p:commandButton actionListener="#{ mbUsuarios.nuevo() }" update="listaUsuarios" value="Nuevo" />
+                            </div>
+                            <div class="col-lg-6">
+                                <h2 class="sub-header">Lista de Usuarios.</h2>
+                                <p:dataTable id="listaUsuarios" var="usuario"
+                                             emptyMessage="No se encontraron resultados."
+                                             widgetVar="tablaUsuarios"
+                                             filteredValue="#{ mbUsuarios.usuariosFiltered }"
+                                             value="#{ mbUsuarios.usuarios }" 
+                                             rows="5" 
+                                             paginator="true"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                             rowsPerPageTemplate="5,10,15,20,30,50" >
+
+                                    <f:facet name="header">
+                                        <p:outputPanel>
+                                            <h:outputText value="Buscar en todos:" />
+                                            <p:inputText id="globalFilter" onkeyup="PF('tablaUsuarios').filter()" style="width:150px" placeholder="Escribe la palabra clave"/>
+                                        </p:outputPanel>
+                                    </f:facet>
+
+                                    <p:column sortBy="#{usuario.id}" filterBy="#{usuario.id}" headerText="Id" filterMatchMode="contains">
+                                        <h:outputText value="#{ usuario.id }" />
+                                    </p:column>
+
+                                    <p:column sortBy="#{usuario.usuario}" filterBy="#{usuario.usuario}" headerText="Nombre" filterMatchMode="contains">
+                                        <h:outputText value="#{ usuario.usuario }" />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="" />
+        <meta name="author" content="cobrakik" />
+
+        <title>BiblioTec</title>
+        <h:outputStylesheet library="#{mbTheme.template}" name="css/bootstrap.min.css"/>
+        <h:outputStylesheet library="#{mbTheme.template}" name="css/bootstrap-theme.min.css"/>
+        <h:outputStylesheet library="#{mbTheme.template}" name="css/dashboard.css"/>
+    </h:head>
+
+    <h:body>
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#{ request.contextPath }/faces/dashboard/index.xhtml">BiblioTec</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <!--
+                        <li><a href="#">Help</a></li>
+                        -->
+                    </ul>
+                    <form class="navbar-form navbar-right">
+                        <input type="text" class="form-control" placeholder="Search..." />
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">                    
+                    <h:form>
+                        <div class="row">
+                            <div class="col-md-12 clearfix">
+                                <h3>Sesion de <small>Federico</small> </h3>
+                            </div>
+                        </div>
+
+                        <ul class="nav nav-sidebar">
+                            <li class="#{ mbNav.active('dashboard/index') }" >
+                                <a href="#{ mbNav.home() }">
+                                    <span class="glyphicon glyphicon-dashboard"></span> DashBoard
+                                    #{ mbNav.active('dashboard/index') }
+                                </a>
+                            </li>
+                            <li class="#{ mbNav.active('usuarios/index') }" >
+                                <a href="#{ mbNav.usuarios() }">
+                                    <span class="glyphicon glyphicon-user"></span> Usuarios
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav nav-sidebar">
+                            <li class="#{ mbNav.active('libros/index') }" >
+                                <a href="#{ mbNav.libros() }">
+                                    <span class="glyphicon glyphicon-book"></span> Libros
+                                </a>
+                            </li>
+                            <li class="#{ mbNav.active('autores/index') }" >
+                                <a href="#{ mbNav.autores() }">
+                                    <span class="glyphicon glyphicon-bookmark"></span> Autores
+                                </a>
+                            </li>
+                            <li class="#{ mbNav.active('editoriales/index') }" >
+                                <a href="#{ mbNav.editoriales() }">
+                                    <span class="glyphicon glyphicon-leaf"></span> Editoriales
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav nav-sidebar">
+                            <li class="#{ mbNav.active('perfil/index') }" >
+                                <a href="#{ mbNav.perfil() }">
+                                    <span class="glyphicon glyphicon-wrench"></span> Perfil
+                                </a>
+                            </li>
+                            <li>
+                                <h:commandLink action="#{authManagedBean.logout()}" >
+                                    <span class="glyphicon glyphicon-log-out"></span> Salir
+                                </h:commandLink>
+                            </li>
+                        </ul>
+                    </h:form>
+                </div>
+
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <ui:insert name="content">
+                        Contenido principal del template
+                    </ui:insert>
+                </div>
+            </div>
+        </div>
+
+        <h:outputScript library="#{mbTheme.template}" name="js/jquery.min.js" />
+        <h:outputScript library="#{mbTheme.template}" name="js/bootstrap.min.js" />
+        <h:outputScript library="#{mbTheme.template}" name="js/docs.min.js" />
+    </h:body>
+</html>

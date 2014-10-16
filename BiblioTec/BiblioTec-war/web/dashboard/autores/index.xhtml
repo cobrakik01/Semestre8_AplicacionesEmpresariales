@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+    <body>
+
+        <ui:composition template="./../../resources/default/template.xhtml">
+            <ui:define name="content">
+                <div class="col-md-8 col-md-offset-2">
+                    <f:view>
+                        <h:form>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h1 class="panel-title">Crear/Editar Autores #{authManagedBean.usuario.id}</h1>
+                                </div>
+                                <div class="panel-body">
+                                    <h:outputLabel value="Apellido Paterno:" for="apellidoP" />
+                                    <h:message for="apellidoP" style="color:red" />
+                                    <h:inputText styleClass="form-control" id="apellidoP" value="#{autoresManagedBean.autor.apellidoP}" title="ApellidoP" p:placeholder="Apellido Paterno" required="true" requiredMessage="El Apellido Paterno es Requerido." />
+
+                                    <h:outputLabel value="Apellido Materno:" for="apellidoM" />
+                                    <h:message for="apellidoM" style="color:red" />
+                                    <h:inputText styleClass="form-control" id="apellidoM" value="#{autoresManagedBean.autor.apellidoM}" title="ApellidoM" p:placeholder="Apellido Materno" required="true" requiredMessage="El Apellido Materno es Requerido." />
+
+                                    <h:outputLabel value="Alias:" for="alias" />
+                                    <h:inputText styleClass="form-control" id="alias" value="#{autoresManagedBean.autor.alias}" title="Alias" p:placeholder="Alias" />
+
+                                    <h:outputLabel value="Pagina:" for="pagina" />
+                                    <h:message for="pagina" style="color:red" />
+                                    <h:inputText styleClass="form-control" id="pagina" value="#{autoresManagedBean.autor.pagina}" title="Pagina" p:placeholder="Numero de Paginas" required="true" requiredMessage="El Numero de Páginas es Requerido." />
+
+                                    <h:outputLabel value="Email:" for="email" />
+                                    <h:message for="email" style="color:red" />
+                                    <h:inputText styleClass="form-control" id="email" value="#{autoresManagedBean.autor.email}" title="Email" p:placeholder="Email" required="true" requiredMessage="El Email es Requerido."/>
+                                </div>
+                                <div class="panel-footer">
+                                    <h:commandButton styleClass="btn btn-primary btn-block" action="#{autoresManagedBean.create()}" value="Nuevo" />
+                                </div>
+                            </div>
+                        </h:form>
+                    </f:view>
+                </div>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>
