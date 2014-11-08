@@ -10,6 +10,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -42,10 +43,10 @@ public class AutoresRs implements Serializable {
     @Column(name = "direccion")
     private String direccion;
     @JoinColumn(name = "autor_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Autores autores;
     @JoinColumn(name = "red_social_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private RedesSociales redesSociales;
 
     public AutoresRs() {

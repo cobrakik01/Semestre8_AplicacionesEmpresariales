@@ -12,6 +12,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -62,15 +63,15 @@ public class Libros implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "edicion")
     private String edicion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "libros")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "libros", fetch = FetchType.LAZY)
     private List<Prestamos> prestamosList;
     @JoinColumn(name = "autor_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Autores autores;
     @JoinColumn(name = "editorial_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Editoriales editoriales;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "libros")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "libros", fetch = FetchType.LAZY)
     private List<Temas> temasList;
 
     public Libros() {

@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -52,9 +53,9 @@ public class RedesSociales implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "pagina")
     private String pagina;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "redesSociales")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "redesSociales", fetch = FetchType.LAZY)
     private List<AutoresRs> autoresRsList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "redesSociales")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "redesSociales", fetch = FetchType.LAZY)
     private List<EditorialesRs> editorialesRsList;
 
     public RedesSociales() {

@@ -8,13 +8,13 @@ package backing;
 import javax.faces.bean.ManagedBean;
 import backing.auth.AuthFilterManagedBean;
 import entity.Accesos;
+import facade.AccesosFacadeLocal;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import service.AccesosServiceLocal;
 
 /**
  *
@@ -25,7 +25,7 @@ import service.AccesosServiceLocal;
 public class UsuariosManagedBean extends AuthFilterManagedBean {
 
     @EJB
-    private AccesosServiceLocal accesosService;
+    private AccesosFacadeLocal accesosFacade;
     private Accesos usuario;
     private List<Accesos> usuarios;
     private List<Accesos> usuariosFiltered;
@@ -41,7 +41,7 @@ public class UsuariosManagedBean extends AuthFilterManagedBean {
 
     @PostConstruct
     public void init() {
-        usuarios = accesosService.findAll();
+        usuarios = accesosFacade.findAll();
     }
 
     /**
@@ -78,7 +78,7 @@ public class UsuariosManagedBean extends AuthFilterManagedBean {
     }
 
     public String nuevo() {
-        Accesos us = this.accesosService.findByName(this.getUsuario().getUsuario());
+        Accesos us = this.accesosFacade.findByName(this.getUsuario().getUsuario());
         if (us != null) {
             FacesMessage msg = new FacesMessage("El usuario ya existe.");
             FacesContext.getCurrentInstance().addMessage("msgs", msg);
@@ -86,7 +86,7 @@ public class UsuariosManagedBean extends AuthFilterManagedBean {
         }
         FacesMessage msg = new FacesMessage("El usuario se dio de alta correctamente.");
         FacesContext.getCurrentInstance().addMessage(null, msg);
-        this.accesosService.create(this.getUsuario());
+        this.accesosFacade.create(this.getUsuario());
         return "index";
     }
 

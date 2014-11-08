@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -62,24 +63,24 @@ public class Prestamos implements Serializable {
     @Column(name = "fecha_entrega_real")
     @Temporal(TemporalType.DATE)
     private Date fechaEntregaReal;
-    @JoinColumn(name = "accesos_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Accesos accesosId;
-    @JoinColumn(name = "estatus_prestamos_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private EstatusPrestamos estatusPrestamosId;
+    @JoinColumn(name = "tipos_renovacion_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private TiposRenovacion tiposRenovacionId;
+    @JoinColumn(name = "usuarios_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Usuarios usuariosId;
     @JoinColumns({
         @JoinColumn(name = "libros_id", referencedColumnName = "id"),
         @JoinColumn(name = "libros_autor_id", referencedColumnName = "autor_id"),
         @JoinColumn(name = "libros_editorial_id", referencedColumnName = "editorial_id")})
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Libros libros;
-    @JoinColumn(name = "tipos_renovacion_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TiposRenovacion tiposRenovacionId;
-    @JoinColumn(name = "usuarios_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Usuarios usuariosId;
+    @JoinColumn(name = "accesos_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Accesos accesosId;
+    @JoinColumn(name = "estatus_prestamos_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private EstatusPrestamos estatusPrestamosId;
 
     public Prestamos() {
     }
@@ -134,30 +135,6 @@ public class Prestamos implements Serializable {
         this.fechaEntregaReal = fechaEntregaReal;
     }
 
-    public Accesos getAccesosId() {
-        return accesosId;
-    }
-
-    public void setAccesosId(Accesos accesosId) {
-        this.accesosId = accesosId;
-    }
-
-    public EstatusPrestamos getEstatusPrestamosId() {
-        return estatusPrestamosId;
-    }
-
-    public void setEstatusPrestamosId(EstatusPrestamos estatusPrestamosId) {
-        this.estatusPrestamosId = estatusPrestamosId;
-    }
-
-    public Libros getLibros() {
-        return libros;
-    }
-
-    public void setLibros(Libros libros) {
-        this.libros = libros;
-    }
-
     public TiposRenovacion getTiposRenovacionId() {
         return tiposRenovacionId;
     }
@@ -172,6 +149,30 @@ public class Prestamos implements Serializable {
 
     public void setUsuariosId(Usuarios usuariosId) {
         this.usuariosId = usuariosId;
+    }
+
+    public Libros getLibros() {
+        return libros;
+    }
+
+    public void setLibros(Libros libros) {
+        this.libros = libros;
+    }
+
+    public Accesos getAccesosId() {
+        return accesosId;
+    }
+
+    public void setAccesosId(Accesos accesosId) {
+        this.accesosId = accesosId;
+    }
+
+    public EstatusPrestamos getEstatusPrestamosId() {
+        return estatusPrestamosId;
+    }
+
+    public void setEstatusPrestamosId(EstatusPrestamos estatusPrestamosId) {
+        this.estatusPrestamosId = estatusPrestamosId;
     }
 
     @Override

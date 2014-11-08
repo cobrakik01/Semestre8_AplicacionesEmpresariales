@@ -1,49 +1,101 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:p="http://primefaces.org/ui">
 
     <body>
 
         <ui:composition template="./../../resources/default/template.xhtml">
             <ui:define name="content">
-                <div class="col-md-8 col-md-offset-2">
-                    <f:view>
-                        <h:form>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h1 class="panel-title">Crear/Editar Autores #{authManagedBean.usuario.id}</h1>
-                                </div>
-                                <div class="panel-body">
-                                    <h:outputLabel value="Apellido Paterno:" for="apellidoP" />
-                                    <h:message for="apellidoP" style="color:red" />
-                                    <h:inputText styleClass="form-control" id="apellidoP" value="#{autoresManagedBean.autor.apellidoP}" title="ApellidoP" p:placeholder="Apellido Paterno" required="true" requiredMessage="El Apellido Paterno es Requerido." />
+                <f:view>
+                    <h:form id="form">
+                        <p:growl id="msgs" showDetail="true" />
 
-                                    <h:outputLabel value="Apellido Materno:" for="apellidoM" />
-                                    <h:message for="apellidoM" style="color:red" />
-                                    <h:inputText styleClass="form-control" id="apellidoM" value="#{autoresManagedBean.autor.apellidoM}" title="ApellidoM" p:placeholder="Apellido Materno" required="true" requiredMessage="El Apellido Materno es Requerido." />
+                        <p:commandButton process=":form:singleDT" update="formNuevoAutor" icon="ui-icon-search" value="Nuevo" oncomplete="PF('dlgNuevoAutor').show()" actionListener="#{dtAutoresSelectionView.resetAutorTableSelectedClick}" />
+                        <p:commandButton process=":form:singleDT" update="formEditarAutor" icon="ui-icon-edit" value="Editar" oncomplete="PF('dlgEditarAutor').show()" />
+                        <p:commandButton value="Eliminar" actionListener="#{dtAutoresSelectionView.eliminar}" update="singleDT, msgs" />
 
-                                    <h:outputLabel value="Alias:" for="alias" />
-                                    <h:inputText styleClass="form-control" id="alias" value="#{autoresManagedBean.autor.alias}" title="Alias" p:placeholder="Alias" />
+                        <p:panel id="contenedorAutores">
+                            <p:dataTable id="singleDT" 
+                                         var="autor" 
+                                         value="#{dtAutoresSelectionView.autores}" 
+                                         selectionMode="single" 
+                                         selection="#{dtAutoresSelectionView.autorTableSelected}" 
+                                         rowKey="#{autor.id}"
+                                         paginator="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15"
+                                         rows="10">
+                                <f:facet name="header">
+                                    Lista de Autores
+                                </f:facet>
+                                <p:ajax event="rowSelect" listener="#{dtAutoresSelectionView.onRowSelect}" update=":form:singleDT" />
+                                <p:column headerText="Id" sortBy="#{autor.id}">
+                                    <h:outputText value="#{autor.id}" />
+                                </p:column>
+                                <p:column headerText="Nombre" footerText="Nombre" sortBy="#{autor.nombre}" filterBy="#{autor.nombre}" filterMatchMode="contains">
+                                    <h:outputText value="#{autor.nombre}" />
+                                </p:column>
+                                <p:column headerText="Apellido Paterno" footerText="Apellido Paterno" sortBy="#{autor.apellidoP}" filterBy="#{autor.apellidoP}" filterMatchMode="contains">
+                                    <h:outputText value="#{autor.apellidoP}" />
+                                </p:column>
+                                <p:column headerText="Apellido Materno" sortBy="#{autor.apellidoM}" filterBy="#{autor.apellidoM}" filterMatchMode="contains">
+                                    <h:outputText value="#{autor.apellidoM}" />
+                                </p:column>
+                                <p:column headerText="Email" sortBy="#{autor.email}" filterBy="#{autor.email}" filterMatchMode="contains">
+                                    <h:outputText value="#{autor.email}" />
+                                </p:column>
+                                <p:column headerText="Alias" sortBy="#{autor.alias}" filterBy="#{autor.alias}" filterMatchMode="contains">
+                                    <h:outputText value="#{autor.alias}" />
+                                </p:column>
+                                <p:column headerText="Páginas" sortBy="#{autor.pagina}" filterBy="#{autor.pagina}" filterMatchMode="contains">
+                                    <h:outputText value="#{autor.pagina}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
 
-                                    <h:outputLabel value="Pagina:" for="pagina" />
-                                    <h:message for="pagina" style="color:red" />
-                                    <h:inputText styleClass="form-control" id="pagina" value="#{autoresManagedBean.autor.pagina}" title="Pagina" p:placeholder="Numero de Paginas" required="true" requiredMessage="El Numero de Páginas es Requerido." />
 
-                                    <h:outputLabel value="Email:" for="email" />
-                                    <h:message for="email" style="color:red" />
-                                    <h:inputText styleClass="form-control" id="email" value="#{autoresManagedBean.autor.email}" title="Email" p:placeholder="Email" required="true" requiredMessage="El Email es Requerido."/>
-                                </div>
-                                <div class="panel-footer">
-                                    <h:commandButton styleClass="btn btn-primary btn-block" action="#{autoresManagedBean.create()}" value="Nuevo" />
-                                </div>
-                            </div>
-                        </h:form>
-                    </f:view>
-                </div>
+                        <p:dialog header="Nuevo Autor" widgetVar="dlgNuevoAutor" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="formNuevoAutor" style="text-align:center;">
+                                <h:outputText value="Nombre" />
+                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autor.nombre}" />
+                                <h:outputText value="Apellido Paterno" />
+                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autor.apellidoP}" />
+                                <h:outputText value="Apellido Materno" />
+                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autor.apellidoM}" />
+                                <h:outputText value="Alias" />
+                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autor.alias}" />
+                                <h:outputText value="Email" />
+                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autor.email}" />
+                                <h:outputText value="Páginas" />
+                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autor.pagina}" />
+                                <p:commandButton value="Nuevo" actionListener="#{dtAutoresSelectionView.nuevoAutorClick}" oncomplete="PF('dlgNuevoAutor').hidden()" immediate="true" update="msgs, singleDT" />
+                            </p:outputPanel>
+                        </p:dialog>
+
+                        <p:dialog header="Editar Autor" widgetVar="dlgEditarAutor" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="formEditarAutor" style="text-align:center;">
+                                <h:outputText value="Nombre" />
+                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autor.nombre}" />
+                                <h:outputText value="Apellido Paterno" />
+                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autorTableSelected.apellidoP}" />
+                                <h:outputText value="Apellido Materno" />
+                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autorTableSelected.apellidoM}" />
+                                <h:outputText value="Alias" />
+                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autorTableSelected.alias}" />
+                                <h:outputText value="Email" />
+                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autorTableSelected.email}" />
+                                <h:outputText value="Páginas" />
+                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autorTableSelected.pagina}" />
+                                <p:commandButton value="Editar" actionListener="#{dtAutoresSelectionView.editarAutorClick}" update="msgs, singleDT" />
+                            </p:outputPanel>
+                        </p:dialog>
+                    </h:form>
+                </f:view>
             </ui:define>
         </ui:composition>
 

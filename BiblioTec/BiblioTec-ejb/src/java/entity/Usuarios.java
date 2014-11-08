@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -104,12 +105,12 @@ public class Usuarios implements Serializable {
     @Column(name = "cp")
     private String cp;
     @JoinColumn(name = "carreras_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Carreras carrerasId;
     @JoinColumn(name = "tipo_usuario_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TiposUsuarios tipoUsuarioId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuariosId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuariosId", fetch = FetchType.LAZY)
     private List<Prestamos> prestamosList;
 
     public Usuarios() {

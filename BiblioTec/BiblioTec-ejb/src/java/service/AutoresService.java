@@ -17,12 +17,12 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class AutoresService implements AutoresServiceLocal {
+
     @EJB
     private AutoresFacadeLocal autoresFacade;
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-
     @Override
     public void create(Autores autores) {
         this.autoresFacade.create(autores);
@@ -82,7 +82,5 @@ public class AutoresService implements AutoresServiceLocal {
     public Autores findByEmail(String email) throws Exception {
         return this.autoresFacade.findByEmail(email);
     }
-    
-    
-    
+
 }

@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -75,10 +76,10 @@ public class Carreras implements Serializable {
     @Column(name = "fecha_cierre")
     @Temporal(TemporalType.DATE)
     private Date fechaCierre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "carrerasId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "carrerasId", fetch = FetchType.LAZY)
     private List<Usuarios> usuariosList;
     @JoinColumn(name = "estatus_carreras_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private EstatusCarreras estatusCarrerasId;
 
     public Carreras() {

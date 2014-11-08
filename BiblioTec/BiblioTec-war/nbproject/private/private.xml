@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Dora/Documents/NetBeansProjects/BiblioTec/BiblioTec-war/web/resources/default/main.xhtml</file>
-            <file>file:/C:/Users/Dora/Documents/NetBeansProjects/BiblioTec/BiblioTec-war/web/carreras/index.xhtml</file>
+            <file>file:/C:/Users/cobrakik/Documents/GitHub/Semestre8_AplicacionesEmpresariales/BiblioTec/BiblioTec-war/web/dashboard/libros/index.xhtml</file>
+            <file>file:/C:/Users/cobrakik/Documents/GitHub/Semestre8_AplicacionesEmpresariales/BiblioTec/BiblioTec-war/src/java/backing/LibrosSelectionView.java</file>
+            <file>file:/C:/Users/cobrakik/Documents/GitHub/Semestre8_AplicacionesEmpresariales/BiblioTec/BiblioTec-war/src/java/backing/EditorialManagedBean.java</file>
+            <file>file:/C:/Users/cobrakik/Documents/GitHub/Semestre8_AplicacionesEmpresariales/BiblioTec/BiblioTec-war/web/dashboard/autores/index.xhtml</file>
         </group>
     </open-files>
 </project-private>

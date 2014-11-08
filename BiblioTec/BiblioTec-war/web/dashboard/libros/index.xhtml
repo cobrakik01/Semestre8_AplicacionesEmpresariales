@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../resources/default/template.xhtml">
+            <ui:define name="content">
+                <f:view>
+                    <p:growl id="msgs" showDetail="true" />
+
+                    <h1 class="page-header"><h:outputText value="Administracion de Libros"/></h1>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h:form id="formNuevo">
+                                <p:outputPanel autoUpdate="true" class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h1 class="panel-title">Libro</h1>
+                                    </div>
+                                    <div class="panel-body">
+                                        <p:outputLabel value="ISBN" />
+                                        <p:inputText value="#{mbLibros.libroNuevo.isbn}" class="form-control" />
+                                        <p:outputLabel value="Titulo" />
+                                        <p:inputText value="#{mbLibros.libroNuevo.titulo}" class="form-control" />
+                                        <p:outputLabel value="Edicion" />
+                                        <p:inputText value="#{mbLibros.libroNuevo.edicion}" class="form-control" />
+
+                                        
+                                            <p:outputLabel value="Autor:" />
+                                            <p:outputLabel id="olSinAutorSelected" rendered="#{dtAutoresSelectionView.autorTableSelected.toString().length() == 0}" value="Sin autor " />
+                                            <p:outputLabel id="olAutoreSelected" rendered="#{dtAutoresSelectionView.autorTableSelected.toString().length() > 0}" value="#{mbLibros.autor}" class="form-control" />
+                                            <p:commandButton class="btn btn-default btn-xs" icon="ui-icon-search" type="button" onclick="PF('dlgAutores').show();" />
+                                        
+
+                                        <div class="btn-group">
+                                            <p:commandButton value="Nuevo" class="btn btn-primary" />
+                                            <p:commandButton value="Editar" class="btn btn-default" />
+                                            <p:commandButton value="Eliminar" class="btn btn-warning" />
+                                        </div>
+                                    </div>
+                                </p:outputPanel>
+
+                                <p:dialog header="Buscar Autor" widgetVar="dlgAutores" modal="true" height="300" width="800">
+                                    <p:dataTable var="item"
+                                                 value="#{dtAutoresSelectionView.autores}" 
+                                                 selectionMode="single" 
+                                                 selection="#{dtAutoresSelectionView.autorTableSelected}" 
+                                                 rowKey="#{item.id}"
+                                                 paginator="true"
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="5,10,15"
+                                                 rows="10">
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Id"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.id}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Nombre"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.nombre}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="ApellidoP"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.apellidoP}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="ApellidoM"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.apellidoM}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Alias"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.alias}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Pagina"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.pagina}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Email"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.email}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                    <p:commandButton type="button" onclick="PF('dlgAutores').hide()" value="Seleccionar" update="olSinAutorSelected, olAutoreSelected" />
+                                </p:dialog>
+                            </h:form>  
+                        </div>
+
+                        <div class="col-md-8">
+                            <h:form id="formLibros">
+                                <h3><h:outputText value="Lista de libros"/></h3>
+                                <p:dataTable id="dtLibros" value="#{mbLibros.libros}" var="item">
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Id"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.librosPK.id}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="NoPaginas"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.noPaginas}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Isbn"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.isbn}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Titulo"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.titulo}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Edicion"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.edicion}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Autores"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.autores}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Editoriales"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.editoriales}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:form>
+                        </div>
+                    </div>
+                </f:view>
+
+
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

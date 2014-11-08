@@ -5,6 +5,8 @@
  */
 package facade;
 
+import entity.Autores;
+import entity.Editoriales;
 import entity.Libros;
 import java.util.List;
 import javax.ejb.Local;
@@ -29,5 +31,17 @@ public interface LibrosFacadeLocal {
     List<Libros> findRange(int[] range);
 
     int count();
+    
+    List<Libros> findByAutores(Autores autor);
+
+    List<Libros> findByEditorial(Editoriales editorial);
+
+    List<Libros> findByNoPaginas(Integer paginas);
+
+    Libros findByIsbn(String isbn);
+
+    List<Libros> findByTitulo(String titulo);
+
+    List<Libros> findByEdicion(String edicion);
     
 }

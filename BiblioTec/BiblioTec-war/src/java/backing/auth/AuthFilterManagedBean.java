@@ -5,10 +5,8 @@
  */
 package backing.auth;
 
-import facade.AccesosFacadeLocal;
 import java.io.IOException;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;

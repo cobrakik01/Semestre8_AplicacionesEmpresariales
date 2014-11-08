@@ -22,9 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 @SessionScoped
 public class NavegationManagedBean extends AuthFilterManagedBean {
 
-    @ManagedProperty(value = "#{authManagedBean}")
-    private AuthManagedBean auth;
-
     private String context;
     private String currentPage;
 
@@ -41,7 +38,11 @@ public class NavegationManagedBean extends AuthFilterManagedBean {
     }
 
     public AuthManagedBean getAuth() {
-        return auth;
+        return this.getAuthManagedBean();
+    }
+
+    public void setAuth(AuthManagedBean auth) {
+        this.setAuthManagedBean(auth);
     }
 
     public String getCurrentPage() {
@@ -56,15 +57,11 @@ public class NavegationManagedBean extends AuthFilterManagedBean {
         Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
         if (request instanceof HttpServletRequest) {
             String uri = ((HttpServletRequest) request).getRequestURI();
-            if(uri.endsWith(page + ".xhtml") || uri.endsWith("/")) {
+            if (uri.endsWith(page + ".xhtml") || uri.endsWith("/")) {
                 return "active";
             }
         }
         return "";
-    }
-
-    public void setAuth(AuthManagedBean auth) {
-        this.auth = auth;
     }
 
     public String home() {

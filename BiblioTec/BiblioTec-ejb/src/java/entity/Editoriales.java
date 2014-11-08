@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Editoriales.findAll", query = "SELECT e FROM Editoriales e"),
     @NamedQuery(name = "Editoriales.findById", query = "SELECT e FROM Editoriales e WHERE e.id = :id"),
+    @NamedQuery(name = "Editoriales.findByNombre", query = "SELECT e FROM Editoriales e WHERE e.nombre = :nombre"),
     @NamedQuery(name = "Editoriales.findByTel", query = "SELECT e FROM Editoriales e WHERE e.tel = :tel"),
     @NamedQuery(name = "Editoriales.findByCalleNumero", query = "SELECT e FROM Editoriales e WHERE e.calleNumero = :calleNumero"),
     @NamedQuery(name = "Editoriales.findByColonia", query = "SELECT e FROM Editoriales e WHERE e.colonia = :colonia"),
@@ -44,6 +46,11 @@ public class Editoriales implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "nombre")
+    private String nombre;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -64,9 +71,9 @@ public class Editoriales implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "ciudad")
     private String ciudad;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "editoriales")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "editoriales", fetch = FetchType.LAZY)
     private List<EditorialesRs> editorialesRsList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "editoriales")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "editoriales", fetch = FetchType.LAZY)
     private List<Libros> librosList;
 
     public Editoriales() {
@@ -76,8 +83,9 @@ public class Editoriales implements Serializable {
         this.id = id;
     }
 
-    public Editoriales(Integer id, String tel, String calleNumero, String colonia, String ciudad) {
+    public Editoriales(Integer id, String nombre, String tel, String calleNumero, String colonia, String ciudad) {
         this.id = id;
+        this.nombre = nombre;
         this.tel = tel;
         this.calleNumero = calleNumero;
         this.colonia = colonia;
@@ -90,6 +98,14 @@ public class Editoriales implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getTel() {

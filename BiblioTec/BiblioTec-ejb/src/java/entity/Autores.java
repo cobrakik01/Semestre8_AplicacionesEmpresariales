@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Autores.findAll", query = "SELECT a FROM Autores a"),
     @NamedQuery(name = "Autores.findById", query = "SELECT a FROM Autores a WHERE a.id = :id"),
+    @NamedQuery(name = "Autores.findByNombre", query = "SELECT a FROM Autores a WHERE a.nombre = :nombre"),
     @NamedQuery(name = "Autores.findByApellidoP", query = "SELECT a FROM Autores a WHERE a.apellidoP = :apellidoP"),
     @NamedQuery(name = "Autores.findByApellidoM", query = "SELECT a FROM Autores a WHERE a.apellidoM = :apellidoM"),
     @NamedQuery(name = "Autores.findByAlias", query = "SELECT a FROM Autores a WHERE a.alias = :alias"),
@@ -45,6 +47,9 @@ public class Autores implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 45)
+    @Column(name = "nombre")
+    private String nombre;
     @Size(max = 45)
     @Column(name = "apellido_p")
     private String apellidoP;
@@ -63,9 +68,9 @@ public class Autores implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "email")
     private String email;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "autores")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "autores", fetch = FetchType.LAZY)
     private List<AutoresRs> autoresRsList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "autores")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "autores", fetch = FetchType.LAZY)
     private List<Libros> librosList;
 
     public Autores() {
@@ -86,6 +91,14 @@ public class Autores implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getApellidoP() {
@@ -168,7 +181,14 @@ public class Autores implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Autores[ id=" + id + " ]";
+        if(this.getNombre() != null && !this.getNombre().equalsIgnoreCase("")) {
+            return this.getNombre();
+        } else if(this.getAlias() != null && !this.getAlias().equalsIgnoreCase("")) {
+            return this.getAlias();
+        } else if(this.getId() != null && this.getId() > 0) {
+            return String.valueOf(this.getId());
+        }
+        return "";
     }
     
 }

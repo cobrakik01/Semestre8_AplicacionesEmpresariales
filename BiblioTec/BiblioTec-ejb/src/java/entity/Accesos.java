@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,7 +42,7 @@ public class Accesos implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id = -1;
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -52,7 +53,7 @@ public class Accesos implements Serializable {
     @Size(min = 1, max = 60)
     @Column(name = "password")
     private String password;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accesosId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accesosId", fetch = FetchType.LAZY)
     private List<Prestamos> prestamosList;
 
     public Accesos() {
