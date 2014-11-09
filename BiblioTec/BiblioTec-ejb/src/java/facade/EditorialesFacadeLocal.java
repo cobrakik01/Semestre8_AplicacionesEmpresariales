@@ -30,4 +30,14 @@ public interface EditorialesFacadeLocal {
 
     int count();
     
+    List<Editoriales> findByNombre(String nombre);
+    
+    List<Editoriales> findByTelefono(String telefono);
+    
+    List<Editoriales> findByDireccion(String direccion);
+    
+    List<Editoriales> findByColonia(String colonia);
+    
+    List<Editoriales> findByCiudad(String ciudad);
+    
 }

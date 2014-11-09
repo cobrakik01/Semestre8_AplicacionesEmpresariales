@@ -6,44 +6,116 @@
 package backing;
 
 import entity.Editoriales;
-import javax.ejb.EJB;
+import facade.exception.EditorialNotFoundException;
+import facade.exception.EditorialRepeatException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ApplicationScoped;
-import service.EditorialesServiceLocal;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
  * @author cobrakik
  */
 @ManagedBean(name = "mbEditorial")
-@ApplicationScoped
+@ViewScoped
 public class EditorialManagedBean {
 
-    @EJB
-    private EditorialesServiceLocal service;
+    @ManagedProperty("#{mbEditorialesService}")
+    private EditorialesService mbEditorialesService;
 
-    private Editoriales editorial = new Editoriales();
+    private List<Editoriales> editoriales;
 
-    /**
-     * Creates a new instance of EditorialManagedBean
-     */
-    public EditorialManagedBean() {
+    private Editoriales currentEditorial = new Editoriales();
+    private Editoriales editorialSeleccionado = new Editoriales();
+
+    @PostConstruct
+    public void init() {
+        editoriales = this.mbEditorialesService.getEditorialesService().findAll();
     }
 
-    public EditorialesServiceLocal getService() {
-        return service;
+    public Editoriales getCurrentEditorial() {
+        return currentEditorial;
     }
 
-    public void setService(EditorialesServiceLocal service) {
-        this.service = service;
+    public void setCurrentEditorial(Editoriales currentEditorial) {
+        this.currentEditorial = currentEditorial;
     }
 
-    public Editoriales getEditorial() {
-        return editorial;
+    public Editoriales getEditorialSeleccionado() {
+        return editorialSeleccionado;
     }
 
-    public void setEditorial(Editoriales editorial) {
-        this.editorial = editorial;
+    public void setEditorialSeleccionado(Editoriales editorialSeleccionado) {
+        this.editorialSeleccionado = editorialSeleccionado;
+    }
+
+    public EditorialesService getMbEditorialesService() {
+        return mbEditorialesService;
+    }
+
+    public void setMbEditorialesService(EditorialesService mbEditorialesService) {
+        this.mbEditorialesService = mbEditorialesService;
+    }
+
+    public List<Editoriales> getEditoriales() {
+        return editoriales;
+    }
+
+    public void setEditoriales(List<Editoriales> editoriales) {
+        this.editoriales = editoriales;
+    }
+
+    public void nuevaEditorialClick() {
+        try {
+            this.mbEditorialesService.getEditorialesService().create(currentEditorial);
+            addMessage("Nueva Editorial", "Se dio de alta una nueva editorial.");
+        } catch (EditorialRepeatException ex) {
+            addMessage("Error", ex.getMessage());
+            Logger.getLogger(EditorialManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        currentEditorial = new Editoriales();
+        editoriales = this.mbEditorialesService.getEditorialesService().findAll();
+    }
+
+    public void editarEditorialClick() {
+        if (currentEditorial != null) {
+            try {
+                this.mbEditorialesService.getEditorialesService().edit(currentEditorial);
+                addMessage("Editar Editorial", "La editorial se actualizo correctamente.");
+            } catch (EditorialRepeatException | EditorialNotFoundException ex) {
+                addMessage("Error", ex.getMessage());
+                Logger.getLogger(EditorialManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        editorialSeleccionado = new Editoriales();
+        currentEditorial = new Editoriales();
+        editoriales = this.mbEditorialesService.getEditorialesService().findAll();
+    }
+
+    public void limpiarEditorialClick() {
+        editorialSeleccionado = new Editoriales();
+        currentEditorial = new Editoriales();
+    }
+
+    public void onRowSelect(SelectEvent event) {
+        editorialSeleccionado = (Editoriales) event.getObject();
+        try {
+            currentEditorial = this.mbEditorialesService.getEditorialesService().find(editorialSeleccionado.getId());
+        } catch (EditorialNotFoundException ex) {
+            Logger.getLogger(EditorialManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void addMessage(String summary, String detail) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
 }

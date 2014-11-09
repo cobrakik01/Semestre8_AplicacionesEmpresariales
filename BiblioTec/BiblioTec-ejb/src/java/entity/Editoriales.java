@@ -7,6 +7,8 @@ package entity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,6 +42,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Editoriales.findByColonia", query = "SELECT e FROM Editoriales e WHERE e.colonia = :colonia"),
     @NamedQuery(name = "Editoriales.findByCiudad", query = "SELECT e FROM Editoriales e WHERE e.ciudad = :ciudad")})
 public class Editoriales implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,27 +51,27 @@ public class Editoriales implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(max = 45)
     @Column(name = "tel")
     private String tel;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(max = 45)
     @Column(name = "calle_numero")
     private String calleNumero;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(max = 45)
     @Column(name = "colonia")
     private String colonia;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(max = 45)
     @Column(name = "ciudad")
     private String ciudad;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "editoriales", fetch = FetchType.LAZY)
@@ -180,7 +183,12 @@ public class Editoriales implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Editoriales[ id=" + id + " ]";
+        if (this.getNombre() != null && !this.getNombre().equalsIgnoreCase("")) {
+            return this.getNombre();
+        } else if (this.getId() != null && this.getId() > 0) {
+            return String.valueOf(this.getId());
+        }
+        return "";
     }
-    
+
 }

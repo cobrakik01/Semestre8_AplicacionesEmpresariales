@@ -6,7 +6,6 @@
 package backing.auth;
 
 import entity.Accesos;
-import entity.Usuarios;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;

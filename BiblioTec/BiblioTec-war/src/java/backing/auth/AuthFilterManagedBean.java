@@ -36,12 +36,6 @@ public class AuthFilterManagedBean {
         }
     }
 
-    /**
-     * Creates a new instance of AuthFilterManagedBean
-     */
-    public AuthFilterManagedBean() {
-    }
-
     public AuthManagedBean getAuthManagedBean() {
         return authManagedBean;
     }

@@ -8,13 +8,7 @@ package backing;
 import entity.Autores;
 import entity.Editoriales;
 import entity.Libros;
-import facade.exception.AutorNotFoundException;
-import facade.exception.EditorialNotFoundException;
-import facade.exception.LibroRepeatException;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -36,55 +30,65 @@ public class LibrosSelectionView {
     private LibrosServiceLocal librosService;
 
     @ManagedProperty("#{mbLibrosService}")
-    private LibrosService service;
+    private LibrosService mgLibrosService;
 
-    @ManagedProperty("#{mbEditorial}")
-    private EditorialManagedBean mbEditorial;
+    @ManagedProperty("#{mbEditorialesService}")
+    private EditorialesService mbEditorialesService;
 
-    private List<Libros> libros = new LinkedList<>();
-    private Libros libroSelected = new Libros();
-    private Libros libroNuevo = new Libros();
-    private Editoriales editorial = new Editoriales();
-    private Autores autor;
+    private List<Libros> libros;
+    private Libros libroSelected;
+    private Libros libroNuevo;
+    private Autores autorSeleccionado;
+    private Editoriales editorialSeleccionado;
+
+    private List<Editoriales> editoriales;
 
     private Integer autorId;
 
     @PostConstruct
     public void init() {
-        this.setLibros(this.getService().getLibrosService().findAll());
-        autor = new Autores();
+        this.libros = this.mgLibrosService.getLibrosService().findAll();
+        this.editoriales = this.mbEditorialesService.getEditorialesService().findAll();
     }
 
-    public EditorialManagedBean getMbEditorial() {
-        return mbEditorial;
+    public List<Editoriales> getEditoriales() {
+        return editoriales;
     }
 
-    public void setMbEditorial(EditorialManagedBean mbEditorial) {
-        this.mbEditorial = mbEditorial;
+    public void setEditoriales(List<Editoriales> editoriales) {
+        this.editoriales = editoriales;
     }
 
-    public LibrosService getService() {
-        return service;
+    public EditorialesService getMbEditorialesService() {
+        return mbEditorialesService;
     }
 
-    public Editoriales getEditorial() {
-        return editorial;
+    public void setMbEditorialesService(EditorialesService mbEditorialesService) {
+        this.mbEditorialesService = mbEditorialesService;
     }
 
-    public void setEditorial(Editoriales editorial) {
-        this.editorial = editorial;
+    public LibrosService getMgLibrosService() {
+        return mgLibrosService;
     }
 
-    public Autores getAutor() {
-        return autor;
+    public void setMgLibrosService(LibrosService mgLibrosService) {
+        this.mgLibrosService = mgLibrosService;
     }
 
-    public void setAutor(Autores autor) {
-        this.autor = autor;
+    public Editoriales getEditorialSeleccionado() {
+        return editorialSeleccionado;
     }
 
-    public void setService(LibrosService service) {
-        this.service = service;
+    public void setEditorialSeleccionado(Editoriales editorialSeleccionado) {
+        this.editorialSeleccionado = editorialSeleccionado;
+    }
+
+    public Autores getAutorSeleccionado() {
+        return autorSeleccionado;
+    }
+
+    public void setAutorSeleccionado(Autores autorSeleccionado) {
+        this.autorSeleccionado = autorSeleccionado;
     }
 
     public Integer getAutorId() {
@@ -121,35 +125,6 @@ public class LibrosSelectionView {
 
     public void eliminarClick() {
 
-    }
-
-    public void onChangeEditorial() {
-        if (mbEditorial.getEditorial() != null) {
-            System.out.println("Editorial seleccionada: " + mbEditorial.getEditorial().getNombre());
-        } else {
-            System.out.println("No se ha seleccionado ninguna editorial.");
-        }
-    }
-
-    public void nuevoClick() {
-        if (mbEditorial.getEditorial() != null) {
-            System.out.println("Editorial seleccionada: " + mbEditorial.getEditorial().getNombre());
-        }
-        /*
-         try {
-         this.librosService.create(this.libroNuevo);
-         addMessage("Nuevo Libro", "Se dio de alta un nuevo libro.");
-         } catch (LibroRepeatException ex) {
-         Logger.getLogger(LibrosSelectionView.class.getName()).log(Level.SEVERE, null, ex);
-         addMessage("Nuevo Libro", ex.getLocalizedMessage());
-         } catch (AutorNotFoundException ex) {
-         Logger.getLogger(LibrosSelectionView.class.getName()).log(Level.SEVERE, null, ex);
-         addMessage("Nuevo Libro", ex.getLocalizedMessage());
-         } catch (EditorialNotFoundException ex) {
-         Logger.getLogger(LibrosSelectionView.class.getName()).log(Level.SEVERE, null, ex);
-         addMessage("Nuevo Libro", ex.getLocalizedMessage());
-         }
-         */
     }
 
     private void addMessage(String summary, String detail) {

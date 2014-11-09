@@ -12,100 +12,167 @@
         <ui:composition template="./../../resources/default/template.xhtml">
             <ui:define name="content">
                 <f:view>
-                    <p:growl id="msgs" showDetail="true" />
+                    <h:form id="form">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h1><h:outputText value="Create/Edit"/></h1>
+                                <p:panelGrid columns="2">
+                                    <p:outputLabel value="NoPaginas:" for="noPaginas" />
+                                    <p:inputText id="noPaginas" value="#{mbLibros.libroNuevo.noPaginas}" title="NoPaginas" required="true" requiredMessage="The NoPaginas field is required."/>
+                                    <p:outputLabel value="Isbn:" for="isbn" />
+                                    <p:inputText id="isbn" value="#{mbLibros.libroNuevo.isbn}" title="Isbn" required="true" requiredMessage="The Isbn field is required."/>
+                                    <p:outputLabel value="Titulo:" for="titulo" />
+                                    <p:inputText id="titulo" value="#{mbLibros.libroNuevo.titulo}" title="Titulo" required="true" requiredMessage="The Titulo field is required."/>
+                                    <p:outputLabel value="Edicion:" for="edicion" />
+                                    <p:inputText id="edicion" value="#{mbLibros.libroNuevo.edicion}" title="Edicion" required="true" requiredMessage="The Edicion field is required."/>
 
-                    <h1 class="page-header"><h:outputText value="Administracion de Libros"/></h1>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h:form id="formNuevo">
-                                <p:outputPanel autoUpdate="true" class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h1 class="panel-title">Libro</h1>
-                                    </div>
-                                    <div class="panel-body">
-                                        <p:outputLabel value="ISBN" />
-                                        <p:inputText value="#{mbLibros.libroNuevo.isbn}" class="form-control" />
-                                        <p:outputLabel value="Titulo" />
-                                        <p:inputText value="#{mbLibros.libroNuevo.titulo}" class="form-control" />
-                                        <p:outputLabel value="Edicion" />
-                                        <p:inputText value="#{mbLibros.libroNuevo.edicion}" class="form-control" />
+                                    <p:outputLabel value="Autores:">
+                                        <p:commandButton type="button" icon="ui-icon-search" onclick="PF('dlgAutores').show();" />
+                                    </p:outputLabel>
+                                    <p:outputLabel id="autorSeleccionado" value="#{empty mbLibros.autorSeleccionado ? 'Selecciona un autor': mbLibros.autorSeleccionado}" />
 
-                                        
-                                            <p:outputLabel value="Autor:" />
-                                            <p:outputLabel id="olSinAutorSelected" rendered="#{dtAutoresSelectionView.autorTableSelected.toString().length() == 0}" value="Sin autor " />
-                                            <p:outputLabel id="olAutoreSelected" rendered="#{dtAutoresSelectionView.autorTableSelected.toString().length() > 0}" value="#{mbLibros.autor}" class="form-control" />
-                                            <p:commandButton class="btn btn-default btn-xs" icon="ui-icon-search" type="button" onclick="PF('dlgAutores').show();" />
-                                        
+                                    <p:outputLabel value="Editoriales:">
+                                        <p:commandButton type="button" icon="ui-icon-search" onclick="PF('dlgEditoriales').show()" />
+                                    </p:outputLabel>
+                                    <p:outputLabel id="editorialSeleccionado" value="#{empty mbLibros.editorialSeleccionado ? 'Selecciona una editorial' : mbLibros.editorialSeleccionado}" />
 
-                                        <div class="btn-group">
-                                            <p:commandButton value="Nuevo" class="btn btn-primary" />
-                                            <p:commandButton value="Editar" class="btn btn-default" />
-                                            <p:commandButton value="Eliminar" class="btn btn-warning" />
-                                        </div>
-                                    </div>
-                                </p:outputPanel>
+                                </p:panelGrid>
 
-                                <p:dialog header="Buscar Autor" widgetVar="dlgAutores" modal="true" height="300" width="800">
-                                    <p:dataTable var="item"
-                                                 value="#{dtAutoresSelectionView.autores}" 
-                                                 selectionMode="single" 
-                                                 selection="#{dtAutoresSelectionView.autorTableSelected}" 
-                                                 rowKey="#{item.id}"
-                                                 paginator="true"
-                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                 rowsPerPageTemplate="5,10,15"
-                                                 rows="10">
-                                        <p:column>
+                                <!-- Inicio - overLay tabla para buscar y seleciconar a un autor -->
+                                <p:dialog 
+                                    header="Selecciona un autor"
+                                    widgetVar="dlgAutores" 
+                                    modal="true" 
+                                    width="900">
+                                    <p:dataTable 
+                                        id="dtAutores"
+                                        value="#{dtAutoresSelectionView.autores}"
+                                        var="item"
+                                        selectionMode="single"
+                                        selection="#{mbLibros.autorSeleccionado}"
+                                        rowKey="#{item.id}"
+                                        rows="5"
+                                        paginator="true"
+                                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                        rowsPerPageTemplate="5, 10, 15">
+                                        <f:facet name="header">
+                                            Buscar Autor
+                                        </f:facet>
+                                        <p:column sortBy="#{item.id}">
                                             <f:facet name="header">
-                                                <h:outputText value="Id"/>
+                                                <h:outputText value="#"/>
                                             </f:facet>
                                             <h:outputText value="#{item.id}"/>
                                         </p:column>
-                                        <p:column>
+                                        <p:column sortBy="#{item.nombre}">
                                             <f:facet name="header">
                                                 <h:outputText value="Nombre"/>
                                             </f:facet>
                                             <h:outputText value="#{item.nombre}"/>
                                         </p:column>
-                                        <p:column>
+                                        <p:column sortBy="#{item.apellidoP}">
                                             <f:facet name="header">
-                                                <h:outputText value="ApellidoP"/>
+                                                <h:outputText value="Apellido Paterno"/>
                                             </f:facet>
                                             <h:outputText value="#{item.apellidoP}"/>
                                         </p:column>
-                                        <p:column>
+                                        <p:column sortBy="#{item.apellidoM}">
                                             <f:facet name="header">
-                                                <h:outputText value="ApellidoM"/>
+                                                <h:outputText value="Apellido Materno"/>
                                             </f:facet>
                                             <h:outputText value="#{item.apellidoM}"/>
                                         </p:column>
-                                        <p:column>
+                                        <p:column sortBy="#{item.alias}">
                                             <f:facet name="header">
                                                 <h:outputText value="Alias"/>
                                             </f:facet>
                                             <h:outputText value="#{item.alias}"/>
                                         </p:column>
-                                        <p:column>
+                                        <p:column sortBy="#{item.pagina}">
                                             <f:facet name="header">
-                                                <h:outputText value="Pagina"/>
+                                                <h:outputText value="Paginas"/>
                                             </f:facet>
                                             <h:outputText value="#{item.pagina}"/>
                                         </p:column>
-                                        <p:column>
+                                        <p:column sortBy="#{item.email}">
                                             <f:facet name="header">
                                                 <h:outputText value="Email"/>
                                             </f:facet>
                                             <h:outputText value="#{item.email}"/>
                                         </p:column>
+                                        <f:facet name="footer">
+                                            <p:commandButton process="dtAutores" update=":form:autorSeleccionado" value="Seleccionar" oncomplete="PF('dlgAutores').hide()" />
+                                        </f:facet>
                                     </p:dataTable>
-                                    <p:commandButton type="button" onclick="PF('dlgAutores').hide()" value="Seleccionar" update="olSinAutorSelected, olAutoreSelected" />
                                 </p:dialog>
-                            </h:form>  
-                        </div>
+                                <!-- Fin - overLay tabla para buscar y seleciconar a un autor -->
 
-                        <div class="col-md-8">
-                            <h:form id="formLibros">
-                                <h3><h:outputText value="Lista de libros"/></h3>
+                                <!-- Inicio - overLay tabla para buscar y seleciconar a una editorial -->
+                                <p:dialog
+                                    header="Selecciona una editorial"
+                                    widgetVar="dlgEditoriales"
+                                    modal="true"
+                                    width="900">
+                                    <p:dataTable 
+                                        id="tdEditoriales"
+                                        value="#{mbEditorial.editoriales}" 
+                                        var="item"
+                                        selectionMode="single"
+                                        selection="#{mbLibros.editorialSeleccionado}"
+                                        rowKey="${item.id}"
+                                        rows="5"
+                                        paginator="true"
+                                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                        rowsPerPageTemplate="5, 10, 15">
+                                        <f:facet name="header">
+                                            Buscar Editorial
+                                        </f:facet>
+                                        <p:column sortBy="#{item.id}">
+                                            <f:facet name="header">
+                                                <h:outputText value="Id"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.id}"/>
+                                        </p:column>
+                                        <p:column sortBy="#{item.nombre}">
+                                            <f:facet name="header">
+                                                <h:outputText value="Nombre"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.nombre}"/>
+                                        </p:column>
+                                        <p:column sortBy="#{item.tel}">
+                                            <f:facet name="header">
+                                                <h:outputText value="Tel"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.tel}"/>
+                                        </p:column>
+                                        <p:column sortBy="#{item.calleNumero}">
+                                            <f:facet name="header">
+                                                <h:outputText value="CalleNumero"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.calleNumero}"/>
+                                        </p:column>
+                                        <p:column sortBy="#{item.colonia}">
+                                            <f:facet name="header">
+                                                <h:outputText value="Colonia"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.colonia}"/>
+                                        </p:column>
+                                        <p:column sortBy="#{item.ciudad}">
+                                            <f:facet name="header">
+                                                <h:outputText value="Ciudad"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.ciudad}"/>
+                                        </p:column>
+                                        <f:facet name="footer">
+                                            <p:commandButton process="tdEditoriales" update=":form:editorialSeleccionado" value="Seleccionar" oncomplete="PF('dlgEditoriales').hide()" />
+                                        </f:facet>
+                                    </p:dataTable>
+                                </p:dialog>
+                                <!-- Fin - overLay tabla para buscar y seleciconar a una editorial -->
+                            </div>
+
+                            <div class="col-md-8">
+                                <h1><h:outputText value="List"/></h1>
                                 <p:dataTable id="dtLibros" value="#{mbLibros.libros}" var="item">
                                     <p:column>
                                         <f:facet name="header">
@@ -150,11 +217,10 @@
                                         <h:outputText value="#{item.editoriales}"/>
                                     </p:column>
                                 </p:dataTable>
-                            </h:form>
+                            </div>
                         </div>
-                    </div>
+                    </h:form>
                 </f:view>
-
 
             </ui:define>
         </ui:composition>

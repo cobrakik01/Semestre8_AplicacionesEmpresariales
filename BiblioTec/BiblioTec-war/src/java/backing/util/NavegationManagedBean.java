@@ -6,12 +6,10 @@
 package backing.util;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import backing.auth.AuthFilterManagedBean;
 import backing.auth.AuthManagedBean;
-import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -30,11 +28,6 @@ public class NavegationManagedBean extends AuthFilterManagedBean {
      */
     public NavegationManagedBean() {
         context = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-    }
-
-    @PreDestroy
-    public void destroy() {
-
     }
 
     public AuthManagedBean getAuth() {
