@@ -7,6 +7,8 @@ package service;
 
 import entity.Autores;
 import facade.AutoresFacadeLocal;
+import facade.exception.AutorNotFoundException;
+import facade.exception.AutorRepeatException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -21,16 +23,26 @@ public class AutoresService implements AutoresServiceLocal {
     @EJB
     private AutoresFacadeLocal autoresFacade;
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
     @Override
-    public void create(Autores autores) {
-        this.autoresFacade.create(autores);
+    public void create(Autores autores) throws AutorRepeatException {
+        if (!this.exist(autores)) {
+            this.autoresFacade.create(autores);
+        } else {
+            throw new AutorRepeatException("Ya existe el autor.");
+        }
     }
 
     @Override
-    public void edit(Autores autores) {
-        this.autoresFacade.edit(autores);
+    public void edit(Autores autores) throws AutorRepeatException, AutorNotFoundException {
+        Autores oldAutor = this.find(autores.getId());
+        Autores newAutor = autores;
+        if (oldAutor == null) {
+            throw new AutorNotFoundException("Ya existe el autor.");
+        } else if (!oldAutor.igual(newAutor)) {
+            this.autoresFacade.edit(newAutor);
+        } else if (this.exist(newAutor)) {
+            throw new AutorRepeatException("Ya existe el autor.");
+        }
     }
 
     @Override
@@ -39,7 +51,7 @@ public class AutoresService implements AutoresServiceLocal {
     }
 
     @Override
-    public Autores find(Integer id) {
+    public Autores find(Integer id) throws AutorNotFoundException {
         return this.autoresFacade.find(id);
     }
 
@@ -59,28 +71,33 @@ public class AutoresService implements AutoresServiceLocal {
     }
 
     @Override
-    public List<Autores> findByApp(String app) {
+    public List<Autores> findByApp(String app) throws AutorNotFoundException {
         return this.autoresFacade.findByApp(app);
     }
 
     @Override
-    public List<Autores> findByApm(String apm) {
+    public List<Autores> findByApm(String apm) throws AutorNotFoundException {
         return this.autoresFacade.findByApm(apm);
     }
 
     @Override
-    public List<Autores> findByAlias(String alias) {
+    public List<Autores> findByAlias(String alias) throws AutorNotFoundException {
         return this.autoresFacade.findByAlias(alias);
     }
 
     @Override
-    public List<Autores> findByPages(Integer pages) {
+    public List<Autores> findByPages(Integer pages) throws AutorNotFoundException {
         return this.autoresFacade.findByPages(pages);
     }
 
     @Override
-    public Autores findByEmail(String email) throws Exception {
+    public Autores findByEmail(String email) throws AutorNotFoundException {
         return this.autoresFacade.findByEmail(email);
+    }
+
+    @Override
+    public boolean exist(Autores autor) {
+        return this.autoresFacade.findByAutor(autor).size() > 0;
     }
 
 }

@@ -28,10 +28,8 @@ import org.primefaces.event.SelectEvent;
 public class EditorialManagedBean {
 
     @ManagedProperty("#{mbEditorialesService}")
-    private EditorialesService mbEditorialesService;
-
+    private EditorialesManagedBeanService mbEditorialesService;
     private List<Editoriales> editoriales;
-
     private Editoriales currentEditorial = new Editoriales();
     private Editoriales editorialSeleccionado = new Editoriales();
 
@@ -56,11 +54,11 @@ public class EditorialManagedBean {
         this.editorialSeleccionado = editorialSeleccionado;
     }
 
-    public EditorialesService getMbEditorialesService() {
+    public EditorialesManagedBeanService getMbEditorialesService() {
         return mbEditorialesService;
     }
 
-    public void setMbEditorialesService(EditorialesService mbEditorialesService) {
+    public void setMbEditorialesService(EditorialesManagedBeanService mbEditorialesService) {
         this.mbEditorialesService = mbEditorialesService;
     }
 

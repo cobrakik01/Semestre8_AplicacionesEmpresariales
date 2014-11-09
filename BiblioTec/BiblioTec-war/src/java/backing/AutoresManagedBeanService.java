@@ -14,18 +14,12 @@ import service.AutoresServiceLocal;
  *
  * @author cobrakik
  */
-@ManagedBean
+@ManagedBean(name = "mbAutoresService")
 @ApplicationScoped
-public class AutoresService {
+public class AutoresManagedBeanService {
 
     @EJB
     private AutoresServiceLocal autoresService;
-
-    /**
-     * Creates a new instance of AutoresService
-     */
-    public AutoresService() {
-    }
 
     public AutoresServiceLocal getAutoresService() {
         return autoresService;

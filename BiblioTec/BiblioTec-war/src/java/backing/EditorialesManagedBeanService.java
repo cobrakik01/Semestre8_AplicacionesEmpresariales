@@ -16,7 +16,7 @@ import service.EditorialesServiceLocal;
  */
 @ManagedBean(name = "mbEditorialesService")
 @ApplicationScoped
-public class EditorialesService {
+public class EditorialesManagedBeanService {
 
     @EJB
     private EditorialesServiceLocal editorialesService;

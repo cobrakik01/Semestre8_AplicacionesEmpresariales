@@ -15,87 +15,79 @@
                     <h:form id="form">
                         <p:growl id="msgs" showDetail="true" />
 
-                        <p:commandButton process=":form:singleDT" update="formNuevoAutor" icon="ui-icon-search" value="Nuevo" oncomplete="PF('dlgNuevoAutor').show()" actionListener="#{dtAutoresSelectionView.resetAutorTableSelectedClick}" />
-                        <p:commandButton process=":form:singleDT" update="formEditarAutor" icon="ui-icon-edit" value="Editar" oncomplete="PF('dlgEditarAutor').show()" />
-                        <p:commandButton value="Eliminar" actionListener="#{dtAutoresSelectionView.eliminar}" update="singleDT, msgs" />
+                        <div class="row">
+                            <h1 class="page-header">Administración de Autores</h1>
+                            <div class="col-md-4">
+                                <h3><h:outputText value="Nuevo/Editar"/></h3>
+                                <p:panelGrid id="formAutor" columns="2">
+                                    <p:outputLabel value="Id:" for="id" />
+                                    <p:inputText id="id" readonly="true" value="#{mbAutores.currentAutor.id}"/>
+                                    <p:outputLabel value="Nombre:" for="nombre" />
+                                    <p:inputText id="nombre" value="#{mbAutores.currentAutor.nombre}" title="Nombre" />
+                                    <p:outputLabel value="Apellido Paterno:" for="apellidoP" />
+                                    <p:inputText id="apellidoP" value="#{mbAutores.currentAutor.apellidoP}" title="Apellido Paterno" />
+                                    <p:outputLabel value="Apellido Materno:" for="apellidoM" />
+                                    <p:inputText id="apellidoM" value="#{mbAutores.currentAutor.apellidoM}" title="Apellido Materno" />
+                                    <p:outputLabel value="Alias:" for="alias" />
+                                    <p:inputText id="alias" value="#{mbAutores.currentAutor.alias}" title="Alias" />
+                                    <p:outputLabel value="Paginas:" for="pagina" />
+                                    <p:inputText id="pagina" value="#{mbAutores.currentAutor.pagina}" title="Paginas" />
+                                    <p:outputLabel value="Email:" for="email" />
+                                    <p:inputText id="email" value="#{mbAutores.currentAutor.email}" title="Email" required="true" requiredMessage="The Email field is required."/>
+                                </p:panelGrid>
+                                <p:commandButton value="Nuevo" actionListener="#{mbAutores.nuevoAutorClick}" update="msgs, formAutor, dtAutores" />
+                                <p:commandButton value="Editar" actionListener="#{mbAutores.editarAutorClick}" update="msgs, formAutor, dtAutores" />
+                                <p:commandButton value="Limpiar" actionListener="#{mbAutores.limpiarAutorClick}" update="formAutor, dtAutores" />
+                            </div>
+                            <div class="col-md-8">
+                                <p:dataTable 
+                                    id="dtAutores" 
+                                    value="#{mbAutores.autores}" 
+                                    var="item"
+                                    selectionMode="single"
+                                    selection="#{mbAutores.autorSeleccionado}"
+                                    rowKey="#{item.id}"
+                                    rows="5"
+                                    paginator="true"
+                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    rowsPerPageTemplate="5, 10, 15"
+                                    emptyMessage="No se encontraron resultados.">
+                                    
+                                    <f:facet name="header">
+                                        <h:outputText value="Lista de autores" />
+                                    </f:facet>
+                                    
+                                    <p:ajax event="rowSelect" listener="#{mbAutores.onRowSelect}" update="@parent:formAutor" />
+                                    
+                                    <p:column headerText="#" sortBy="#{item.id}" filterBy="#{item.id}" filterMatchMode="contains">
+                                        <h:outputText value="#{item.id}"/>
+                                    </p:column>
+                                    <p:column headerText="Nombre" sortBy="#{item.nombre}" filterBy="#{item.nombre}" filterMatchMode="contains">
+                                        <h:outputText value="#{item.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Apellido Paterno" sortBy="#{item.apellidoP}" filterBy="#{item.apellidoP}" filterMatchMode="contains">
+                                        <h:outputText value="#{item.apellidoP}"/>
+                                    </p:column>
+                                    <p:column headerText="Apellido Materno" sortBy="#{item.apellidoM}" filterBy="#{item.apellidoM}" filterMatchMode="contains">
+                                        <h:outputText value="#{item.apellidoM}"/>
+                                    </p:column>
+                                    <p:column headerText="Alias" sortBy="#{item.alias}" filterBy="#{item.alias}" filterMatchMode="contains">
+                                        <h:outputText value="#{item.alias}"/>
+                                    </p:column>
+                                    <p:column headerText="Páginas" sortBy="#{item.pagina}" filterBy="#{item.pagina}" filterMatchMode="contains">
+                                        <h:outputText value="#{item.pagina}"/>
+                                    </p:column>
+                                    <p:column headerText="Email" sortBy="#{item.email}" filterBy="#{item.email}" filterMatchMode="contains">
+                                        <h:outputText value="#{item.email}"/>
+                                    </p:column>
+                                </p:dataTable>
 
-                        <p:panel id="contenedorAutores">
-                            <p:dataTable id="singleDT" 
-                                         var="autor" 
-                                         value="#{dtAutoresSelectionView.autores}" 
-                                         selectionMode="single" 
-                                         selection="#{dtAutoresSelectionView.autorTableSelected}" 
-                                         rowKey="#{autor.id}"
-                                         paginator="true"
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                         rowsPerPageTemplate="5,10,15"
-                                         rows="10">
-                                <f:facet name="header">
-                                    Lista de Autores
-                                </f:facet>
-                                <p:ajax event="rowSelect" listener="#{dtAutoresSelectionView.onRowSelect}" update=":form:singleDT" />
-                                <p:column headerText="Id" sortBy="#{autor.id}">
-                                    <h:outputText value="#{autor.id}" />
-                                </p:column>
-                                <p:column headerText="Nombre" footerText="Nombre" sortBy="#{autor.nombre}" filterBy="#{autor.nombre}" filterMatchMode="contains">
-                                    <h:outputText value="#{autor.nombre}" />
-                                </p:column>
-                                <p:column headerText="Apellido Paterno" footerText="Apellido Paterno" sortBy="#{autor.apellidoP}" filterBy="#{autor.apellidoP}" filterMatchMode="contains">
-                                    <h:outputText value="#{autor.apellidoP}" />
-                                </p:column>
-                                <p:column headerText="Apellido Materno" sortBy="#{autor.apellidoM}" filterBy="#{autor.apellidoM}" filterMatchMode="contains">
-                                    <h:outputText value="#{autor.apellidoM}" />
-                                </p:column>
-                                <p:column headerText="Email" sortBy="#{autor.email}" filterBy="#{autor.email}" filterMatchMode="contains">
-                                    <h:outputText value="#{autor.email}" />
-                                </p:column>
-                                <p:column headerText="Alias" sortBy="#{autor.alias}" filterBy="#{autor.alias}" filterMatchMode="contains">
-                                    <h:outputText value="#{autor.alias}" />
-                                </p:column>
-                                <p:column headerText="Páginas" sortBy="#{autor.pagina}" filterBy="#{autor.pagina}" filterMatchMode="contains">
-                                    <h:outputText value="#{autor.pagina}" />
-                                </p:column>
-                            </p:dataTable>
-                        </p:panel>
 
-
-                        <p:dialog header="Nuevo Autor" widgetVar="dlgNuevoAutor" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                            <p:outputPanel id="formNuevoAutor" style="text-align:center;">
-                                <h:outputText value="Nombre" />
-                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autor.nombre}" />
-                                <h:outputText value="Apellido Paterno" />
-                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autor.apellidoP}" />
-                                <h:outputText value="Apellido Materno" />
-                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autor.apellidoM}" />
-                                <h:outputText value="Alias" />
-                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autor.alias}" />
-                                <h:outputText value="Email" />
-                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autor.email}" />
-                                <h:outputText value="Páginas" />
-                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autor.pagina}" />
-                                <p:commandButton value="Nuevo" actionListener="#{dtAutoresSelectionView.nuevoAutorClick}" oncomplete="PF('dlgNuevoAutor').hidden()" immediate="true" update="msgs, singleDT" />
-                            </p:outputPanel>
-                        </p:dialog>
-
-                        <p:dialog header="Editar Autor" widgetVar="dlgEditarAutor" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                            <p:outputPanel id="formEditarAutor" style="text-align:center;">
-                                <h:outputText value="Nombre" />
-                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autor.nombre}" />
-                                <h:outputText value="Apellido Paterno" />
-                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autorTableSelected.apellidoP}" />
-                                <h:outputText value="Apellido Materno" />
-                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autorTableSelected.apellidoM}" />
-                                <h:outputText value="Alias" />
-                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autorTableSelected.alias}" />
-                                <h:outputText value="Email" />
-                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autorTableSelected.email}" />
-                                <h:outputText value="Páginas" />
-                                <p:inputText class="form-control" value="#{dtAutoresSelectionView.autorTableSelected.pagina}" />
-                                <p:commandButton value="Editar" actionListener="#{dtAutoresSelectionView.editarAutorClick}" update="msgs, singleDT" />
-                            </p:outputPanel>
-                        </p:dialog>
+                            </div>
+                        </div>
                     </h:form>
                 </f:view>
+
             </ui:define>
         </ui:composition>
 

@@ -6,6 +6,8 @@
 package service;
 
 import entity.Autores;
+import facade.exception.AutorNotFoundException;
+import facade.exception.AutorRepeatException;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -16,13 +18,13 @@ import javax.ejb.Local;
 @Local
 public interface AutoresServiceLocal {
 
-    void create(Autores autores);
+    void create(Autores autores) throws AutorRepeatException;
 
-    void edit(Autores autores);
+    void edit(Autores autores) throws AutorRepeatException, AutorNotFoundException;
 
     void remove(Autores autores);
 
-    Autores find(Integer id);
+    Autores find(Integer id) throws AutorNotFoundException;
 
     List<Autores> findAll();
 
@@ -30,14 +32,16 @@ public interface AutoresServiceLocal {
 
     int count();
 
-    List<Autores> findByApp(String app);
+    List<Autores> findByApp(String app) throws AutorNotFoundException;
 
-    List<Autores> findByApm(String apm);
+    List<Autores> findByApm(String apm) throws AutorNotFoundException;
 
-    List<Autores> findByAlias(String alias);
+    List<Autores> findByAlias(String alias) throws AutorNotFoundException;
 
-    List<Autores> findByPages(Integer pages);
+    List<Autores> findByPages(Integer pages) throws AutorNotFoundException;
 
-    Autores findByEmail(String email) throws Exception;
-    
+    Autores findByEmail(String email) throws AutorNotFoundException;
+
+    boolean exist(Autores autor);
+
 }

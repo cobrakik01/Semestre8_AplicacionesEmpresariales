@@ -38,6 +38,8 @@ public interface AutoresFacadeLocal {
 
     List<Autores> findByPages(Integer pages);
 
-    Autores findByEmail(String email) throws Exception;
+    Autores findByEmail(String email);
+    
+    List<Autores> findByAutor(Autores autor);
 
 }

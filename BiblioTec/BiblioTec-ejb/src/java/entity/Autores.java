@@ -39,7 +39,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Autores.findByApellidoM", query = "SELECT a FROM Autores a WHERE a.apellidoM = :apellidoM"),
     @NamedQuery(name = "Autores.findByAlias", query = "SELECT a FROM Autores a WHERE a.alias = :alias"),
     @NamedQuery(name = "Autores.findByPagina", query = "SELECT a FROM Autores a WHERE a.pagina = :pagina"),
-    @NamedQuery(name = "Autores.findByEmail", query = "SELECT a FROM Autores a WHERE a.email = :email")})
+    @NamedQuery(name = "Autores.findByEmail", query = "SELECT a FROM Autores a WHERE a.email = :email"),
+    @NamedQuery(name = "Autores.findByAutor", query = "SELECT a FROM Autores a WHERE a.nombre = :nombre AND a.apellidoP = :app AND a.apellidoM = :apm AND a.alias = :alias")
+})
 public class Autores implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -173,10 +175,7 @@ public class Autores implements Serializable {
             return false;
         }
         Autores other = (Autores) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
@@ -189,6 +188,13 @@ public class Autores implements Serializable {
             return String.valueOf(this.getId());
         }
         return "";
+    }
+
+    public boolean igual(Autores autor) {
+        return this.getNombre().equalsIgnoreCase(autor.getNombre()) 
+                && this.getApellidoP().equalsIgnoreCase(autor.getApellidoP())
+                && this.getApellidoM().equalsIgnoreCase(autor.getApellidoM())
+                && this.getAlias().equalsIgnoreCase(autor.getAlias());
     }
     
 }

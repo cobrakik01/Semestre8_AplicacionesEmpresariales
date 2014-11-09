@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -14,82 +13,68 @@
                 <f:view>
                     <h:form id="form">
                         <p:growl id="msgs" showDetail="true" />
-                        <div class="col-md-4">
-                            <h1><h:outputText value="Nuevo/Editar"/></h1>
-                            <p:panelGrid id="formNuevaEditorial" columns="2">
-                                <p:outputLabel value="Id:" for="id" />
-                                <p:inputText id="id" readonly="true" value="#{mbEditorial.currentEditorial.id}"/>
-                                <p:outputLabel value="Nombre:" for="nombre" />
-                                <p:inputText id="nombre" value="#{mbEditorial.currentEditorial.nombre}" title="Nombre" required="true" requiredMessage="The Nombre field is required."/>
-                                <p:outputLabel value="Tel:" for="tel" />
-                                <p:inputText id="tel" value="#{mbEditorial.currentEditorial.tel}" title="Tel" required="true" requiredMessage="The Tel field is required."/>
-                                <p:outputLabel value="CalleNumero:" for="calleNumero" />
-                                <p:inputText id="calleNumero" value="#{mbEditorial.currentEditorial.calleNumero}" title="CalleNumero" required="true" requiredMessage="The CalleNumero field is required."/>
-                                <p:outputLabel value="Colonia:" for="colonia" />
-                                <p:inputText id="colonia" value="#{mbEditorial.currentEditorial.colonia}" title="Colonia" required="true" requiredMessage="The Colonia field is required."/>
-                                <p:outputLabel value="Ciudad:" for="ciudad" />
-                                <p:inputText id="ciudad" value="#{mbEditorial.currentEditorial.ciudad}" title="Ciudad" required="true" requiredMessage="The Ciudad field is required."/>
-                            </p:panelGrid>
-                            <p:commandButton value="Nuevo" actionListener="#{mbEditorial.nuevaEditorialClick}" update="msgs, formNuevaEditorial, dtEditoriales" />
-                            <p:commandButton value="Editar" actionListener="#{mbEditorial.editarEditorialClick}" update="msgs, formNuevaEditorial, dtEditoriales" />
-                            <p:commandButton value="Limpiar" actionListener="#{mbEditorial.limpiarEditorialClick}" update="formNuevaEditorial, dtEditoriales" />
-                        </div>
 
-                        <div class="col-lg-8">
-                            <p:dataTable 
-                                id="dtEditoriales"
-                                value="#{mbEditorial.editoriales}" 
-                                var="item"
-                                selectionMode="single"
-                                selection="#{mbEditorial.editorialSeleccionado}"
-                                rowKey="#{item.id}"
-                                rows="5"
-                                paginator="true"
-                                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                rowsPerPageTemplate="5, 10, 15">
-                                <f:facet name="header">
-                                    Lista de editoriales ---
-                                </f:facet>
-                                <p:ajax event="rowSelect" listener="#{mbEditorial.onRowSelect}" update="@parent:formNuevaEditorial" />
-                                <p:column sortBy="#{item.id}">
-                                    <f:facet name="header">
-                                        <h:outputText value="Id"/>
-                                    </f:facet>
-                                    <h:outputText value="#{item.id}"/>
-                                </p:column>
-                                <p:column sortBy="#{item.nombre}">
-                                    <f:facet name="header">
-                                        <h:outputText value="Nombre"/>
-                                    </f:facet>
-                                    <h:outputText value="#{item.nombre}"/>
-                                </p:column>
-                                <p:column sortBy="#{item.tel}">
-                                    <f:facet name="header">
-                                        <h:outputText value="Tel"/>
-                                    </f:facet>
-                                    <h:outputText value="#{item.tel}"/>
-                                </p:column>
-                                <p:column sortBy="#{item.calleNumero}">
-                                    <f:facet name="header">
-                                        <h:outputText value="CalleNumero"/>
-                                    </f:facet>
-                                    <h:outputText value="#{item.calleNumero}"/>
-                                </p:column>
-                                <p:column sortBy="#{item.colonia}">
-                                    <f:facet name="header">
-                                        <h:outputText value="Colonia"/>
-                                    </f:facet>
-                                    <h:outputText value="#{item.colonia}"/>
-                                </p:column>
-                                <p:column sortBy="#{item.ciudad}">
-                                    <f:facet name="header">
-                                        <h:outputText value="Ciudad"/>
-                                    </f:facet>
-                                    <h:outputText value="#{item.ciudad}"/>
-                                </p:column>
-                            </p:dataTable>
-                        </div>
+                        <div class="row">
+                            <h1 class="page-header">Administración de Editoriales</h1>
+                            <div class="col-md-4">
+                                <h3><h:outputText value="Nuevo/Editar"/></h3>
+                                <p:panelGrid id="formNuevaEditorial" columns="2">
+                                    <p:outputLabel value="Id:" for="id" />
+                                    <p:inputText id="id" readonly="true" value="#{mbEditorial.currentEditorial.id}"/>
+                                    <p:outputLabel value="Nombre:" for="nombre" />
+                                    <p:inputText id="nombre" value="#{mbEditorial.currentEditorial.nombre}" title="Nombre" required="true" requiredMessage="The Nombre field is required."/>
+                                    <p:outputLabel value="Tel:" for="tel" />
+                                    <p:inputText id="tel" value="#{mbEditorial.currentEditorial.tel}" title="Tel" required="true" requiredMessage="The Tel field is required."/>
+                                    <p:outputLabel value="CalleNumero:" for="calleNumero" />
+                                    <p:inputText id="calleNumero" value="#{mbEditorial.currentEditorial.calleNumero}" title="CalleNumero" required="true" requiredMessage="The CalleNumero field is required."/>
+                                    <p:outputLabel value="Colonia:" for="colonia" />
+                                    <p:inputText id="colonia" value="#{mbEditorial.currentEditorial.colonia}" title="Colonia" required="true" requiredMessage="The Colonia field is required."/>
+                                    <p:outputLabel value="Ciudad:" for="ciudad" />
+                                    <p:inputText id="ciudad" value="#{mbEditorial.currentEditorial.ciudad}" title="Ciudad" required="true" requiredMessage="The Ciudad field is required."/>
+                                </p:panelGrid>
+                                <p:commandButton value="Nuevo" actionListener="#{mbEditorial.nuevaEditorialClick}" update="msgs, formNuevaEditorial, dtEditoriales" />
+                                <p:commandButton value="Editar" actionListener="#{mbEditorial.editarEditorialClick}" update="msgs, formNuevaEditorial, dtEditoriales" />
+                                <p:commandButton value="Limpiar" actionListener="#{mbEditorial.limpiarEditorialClick}" update="formNuevaEditorial, dtEditoriales" />
+                            </div>
 
+                            <div class="col-lg-8">
+                                <p:dataTable 
+                                    id="dtEditoriales"
+                                    value="#{mbEditorial.editoriales}" 
+                                    var="item"
+                                    selectionMode="single"
+                                    selection="#{mbEditorial.editorialSeleccionado}"
+                                    rowKey="#{item.id}"
+                                    rows="5"
+                                    paginator="true"
+                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    rowsPerPageTemplate="5, 10, 15"
+                                    emptyMessage="No se encontraron resultados.">
+                                    <f:facet name="header">
+                                        <h:outputText value="Lista de editoriales" />
+                                    </f:facet>
+                                    <p:ajax event="rowSelect" listener="#{mbEditorial.onRowSelect}" update="@parent:formNuevaEditorial" />
+                                    <p:column headerText="#" sortBy="#{item.id}" filterBy="#{item.id}" filterMatchMode="contains">
+                                        <h:outputText value="#{item.id}"/>
+                                    </p:column>
+                                    <p:column headerText="Nombre" sortBy="#{item.nombre}" filterBy="#{item.nombre}" filterMatchMode="contains">
+                                        <h:outputText value="#{item.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Teléfono" sortBy="#{item.tel}" filterBy="#{item.tel}" filterMatchMode="contains">
+                                        <h:outputText value="#{item.tel}"/>
+                                    </p:column>
+                                    <p:column headerText="Dirección" sortBy="#{item.calleNumero}" filterBy="#{item.calleNumero}" filterMatchMode="contains">
+                                        <h:outputText value="#{item.calleNumero}"/>
+                                    </p:column>
+                                    <p:column headerText="Colonia" sortBy="#{item.colonia}" filterBy="#{item.colonia}" filterMatchMode="contains">
+                                        <h:outputText value="#{item.colonia}"/>
+                                    </p:column>
+                                    <p:column headerText="Ciudad" sortBy="#{item.ciudad}" filterBy="#{item.ciudad}" filterMatchMode="contains">
+                                        <h:outputText value="#{item.ciudad}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
                     </h:form>
                 </f:view>
 

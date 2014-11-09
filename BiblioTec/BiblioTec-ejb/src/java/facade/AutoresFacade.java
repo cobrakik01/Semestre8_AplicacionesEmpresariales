@@ -51,15 +51,24 @@ public class AutoresFacade extends AbstractFacade<Autores> implements AutoresFac
     }
 
     @Override
-    public Autores findByEmail(String email) throws Exception {
+    public Autores findByEmail(String email) {
         Autores a = null;
         List lista = this.getEntityManager().createNamedQuery("Autores.findByEmail").setParameter("email", email).getResultList();
         if (lista.size() > 0) {
             a = (Autores) lista.get(0);
-        } else {
-            throw new Exception("No se encontro el autor.");
         }
         return a;
+    }
+
+    @Override
+    public List<Autores> findByAutor(Autores autor) {
+        return this.getEntityManager()
+                .createNamedQuery("Autores.findByAutor")
+                .setParameter("nombre", autor.getNombre())
+                .setParameter("app", autor.getApellidoP())
+                .setParameter("apm", autor.getApellidoM())
+                .setParameter("alias", autor.getAlias())
+                .getResultList();
     }
 
 }

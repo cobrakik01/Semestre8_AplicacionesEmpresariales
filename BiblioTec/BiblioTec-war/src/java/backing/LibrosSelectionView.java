@@ -33,7 +33,7 @@ public class LibrosSelectionView {
     private LibrosService mgLibrosService;
 
     @ManagedProperty("#{mbEditorialesService}")
-    private EditorialesService mbEditorialesService;
+    private EditorialesManagedBeanService mbEditorialesService;
 
     private List<Libros> libros;
     private Libros libroSelected;
@@ -59,11 +59,11 @@ public class LibrosSelectionView {
         this.editoriales = editoriales;
     }
 
-    public EditorialesService getMbEditorialesService() {
+    public EditorialesManagedBeanService getMbEditorialesService() {
         return mbEditorialesService;
     }
 
-    public void setMbEditorialesService(EditorialesService mbEditorialesService) {
+    public void setMbEditorialesService(EditorialesManagedBeanService mbEditorialesService) {
         this.mbEditorialesService = mbEditorialesService;
     }
 
