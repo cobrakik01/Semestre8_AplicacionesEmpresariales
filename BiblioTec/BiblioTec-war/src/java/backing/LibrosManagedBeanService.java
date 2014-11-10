@@ -16,7 +16,7 @@ import service.LibrosServiceLocal;
  */
 @ManagedBean(name = "mbLibrosService")
 @ApplicationScoped
-public class LibrosService {
+public class LibrosManagedBeanService {
 
     @EJB
     private LibrosServiceLocal librosService;
